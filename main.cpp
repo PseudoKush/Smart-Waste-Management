@@ -1,10 +1,9 @@
 #include<iostream>
 using namespace std;
-int count;
 #define INFINITY 9999
 
 
-int waste_check(float ht_bin, float lvl)   //Level of Waste Check (Fn1)
+int waste_check(float ht_bin, float lvl)   //To Check Level of Waste (Fn1)
 {
     float chk = 0.6 * ht_bin;
     if(lvl > chk)
@@ -12,21 +11,21 @@ int waste_check(float ht_bin, float lvl)   //Level of Waste Check (Fn1)
     else
         return 0;
 }
-int waste_check(float temp)     //Temperature Check of Waste (Fn2)
+int waste_check(float temp)     //To Check Temperature of Waste (Fn2)
 {
     if(temp>20)
         return 1;
     else
         return 0;
 }
-int waste_check(int ppm)        //Odour Check of Waste (Fn3)
+int waste_check(int ppm)        //To Check Odour of Waste (Fn3)
 {
     if(ppm>15)
         return 1;
     else
         return 0;
 }
-int waste_check(float ht_bin, int depth)    //Type Of Waste Check (Fn4)
+int waste_check(float ht_bin, int depth)    //Type Of Waste Check(Liquid or Solid) (Fn4)
 {
     float chk = 0.4 * ht_bin;
     if(depth>ht_bin)
@@ -56,7 +55,7 @@ int aerosol(float temp, int ppm)        //Aerosol Spray Check (Fn6)
         cout<<"Aerosol not hit";
 }
 
-int waste_pickup(int fn1,int fn2,int fn3,int fn4,int fn5)   //Condition to pickup waste
+int waste_pickup(int fn1,int fn2,int fn3,int fn4,int fn5)   //Condition to check if bin needs to be picked up
 {
     if(fn1)
         return 1;
@@ -79,7 +78,11 @@ int main()
     int Fn1,Fn2,Fn3,Fn4,Fn5,bin[5];
     int i,j;
     
-    for(i=0;i<5;i++)
+    /* The output of the various sensors will be recorded. These outputs wil be then used here as inouts to
+     various functions to determine different prarameters for effective waste bin pickup */
+    
+    //Here we are taking inputs from user as sample values in lieu of ouptput from sensors.
+    for(i=0;i<5;i++)        //Sample of 5 bins
     {
     cout<<"\n\tBin No.: "<<i<<"\n";
     cout<<"Enter Height of bin: ";
@@ -106,9 +109,10 @@ int main()
     
     int flag=1,count=0;
     cout<<"\nBins which are filled and need to be picked up are: \n";   
-    /*if the different parameters to pick up the waste are satisified then they 
-    return a boolean value which is stored in an array
-    */
+    
+    /* If the different parameters to pick up the waste are satisified then they return 
+    a boolean value which is stored in an array */
+    
     for(i=0;i<5;i++)
     {
         if(bin[i]==1)
@@ -127,10 +131,10 @@ int main()
     }
     else                    //else making the shortest path to collect the bins
     {
-        int loc[5][5] = {{0,1,0,3,10},{1,0,5,0,0},{0,5,0,2,1},{3,0,2,0,6},{10,0,1,6,0}};
+        int loc[5][5] = {{0,1,0,3,10},{1,0,5,0,0},{0,5,0,2,1},{3,0,2,0,6},{10,0,1,6,0}};  // Entering distance of each bin w.r.t. each other
         int bin_loc[count][count];
         int x=0,y=0;
-        for(i=0;i<5;i++)        //Choosing those bins only which are filled 
+        for(i=0;i<5;i++)        //Choosing only those bins which are filled 
         {
             if(bin[i]==1)
             {
@@ -146,17 +150,21 @@ int main()
                 x++;
             }
         }
+        
+        
         // Using dijkstra algorithm to calculate the shortest path for bin collection
+        
         int n=count;
         int startnode=0;
         int cost[count][count],distance[count],pred[count];
         int visited[count],ct,mindistance,nextnode,i,j;
+        
         for(i=0;i<n;i++)
             for(j=0;j<n;j++)
-            if(bin_loc[i][j]==0)
-                cost[i][j]=INFINITY;
-            else
-                cost[i][j]=bin_loc[i][j];
+                if(bin_loc[i][j]==0)
+                    cost[i][j]=INFINITY;
+                else
+                    cost[i][j]=bin_loc[i][j];
         for(i=0;i<n;i++) 
         {
             distance[i]=cost[startnode][i];
@@ -183,6 +191,7 @@ int main()
         }
         ct++;
         }
+        
         for(i=0;i<n;i++)
         if(i!=startnode) {
          cout<<"\nDistance of bin "<<i<<"="<<distance[i];
