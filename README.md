@@ -61,4 +61,4 @@ update and is Dijkstra's central idea.
 7.Repeating of steps 4 to 7 until there aren't any nodes left with a permanent distance, which neighbours still have temporary distances.  
 
 Thus, in this way an optimised path can be created to only pickup those dustbins which are either filled or are fouling a lot.  
-Note: This input values from the sensors can be changed as per the user's requirement. Here only sample values are taken after going through some research papers.
+Note: These input values from the sensors can be changed as per the user's requirement. Here only sample values are taken after going through some research papers.
